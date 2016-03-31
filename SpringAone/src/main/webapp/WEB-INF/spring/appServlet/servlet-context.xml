@@ -33,7 +33,7 @@
 
 	<beans:bean id="dataSource"
 		class="org.springframework.jndi.JndiObjectFactoryBean">
-		<beans:property name="jndiName" value="jdbc/hackathonDB" />
+		<beans:property name="jndiName" value="jdbc/aoneDB" />
 	</beans:bean>
 
 	<beans:bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
