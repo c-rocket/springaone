@@ -1,0 +1,3 @@
+db.username=devuser
+db.password=Welcome1#
+db.url=jdbc:oracle:thin:@<DB Connection String with IP>

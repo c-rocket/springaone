@@ -1,0 +1,15 @@
+<project name="SpringAOne" default="setup" basedir=".">
+	<description>Simple build file to setup properties for project steps</description>
+
+	<property name="setupFldr" location="./setup" />
+	<property name="app" location="." />
+
+	<target name="setup">
+		<copy todir="${app}/src/test/java" overwrite="true">
+			<fileset dir="${setupFldr}">
+				<include name="db.properties" />
+				<type type="file" />
+			</fileset>
+		</copy>
+	</target>
+</project>
