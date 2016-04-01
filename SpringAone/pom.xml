@@ -15,6 +15,20 @@
 		<org.slf4j-version>1.6.6</org.slf4j-version>
 		<powermock.version>1.6.3</powermock.version>
 	</properties>
+
+	<repositories>
+		<repository>
+			<id>maven.oracle.com</id>
+			<name>oracle-maven-repo</name>
+			<url>https://maven.oracle.com</url>
+			<layout>default</layout>
+			<releases>
+				<enabled>true</enabled>
+				<updatePolicy>always</updatePolicy>
+			</releases>
+		</repository>
+	</repositories>
+
 	<dependencies>
 		<!-- Spring -->
 		<dependency>
@@ -53,13 +67,38 @@
 			<version>${org.aspectj-version}</version>
 		</dependency>
 
-		<!-- Database (Only Used for Testing) -->
+		<!-- Database -->
 		<dependency>
-			<groupId>com.oracle</groupId>
+			<groupId>com.oracle.jdbc</groupId>
 			<artifactId>ojdbc7</artifactId>
-			<version>12.1.0.1</version>
-			<scope>system</scope>
-			<systemPath>${basedir}/lib/ojdbc7.jar</systemPath>
+			<version>12.1.0.2</version>
+			<exclusions>
+				<!-- Exclude Commons Logging in favor of SLF4j -->
+				<exclusion>
+					<groupId>com.oracle.jdbc</groupId>
+					<artifactId>xdb6</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.oracle.jdbc</groupId>
+					<artifactId>orai18n</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.oracle.jdbc</groupId>
+					<artifactId>xmlparserv2</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.oracle.jdbc</groupId>
+					<artifactId>oraclepki</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.oracle.jdbc</groupId>
+					<artifactId>osdt_cert</artifactId>
+				</exclusion>
+				<exclusion>
+					<groupId>com.oracle.jdbc</groupId>
+					<artifactId>osdt_core</artifactId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<!-- Crypto -->
