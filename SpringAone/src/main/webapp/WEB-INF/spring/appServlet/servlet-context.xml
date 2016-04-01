@@ -2,9 +2,11 @@
 <beans:beans xmlns="http://www.springframework.org/schema/mvc"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:beans="http://www.springframework.org/schema/beans"
 	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:jee="http://www.springframework.org/schema/jee"
 	xsi:schemaLocation="http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc.xsd
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd">
+		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context.xsd
+		http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.0.xsd">
 
 	<!-- DispatcherServlet Context: defines this servlet's request-processing 
 		infrastructure -->
@@ -35,6 +37,17 @@
 		class="org.springframework.jndi.JndiObjectFactoryBean">
 		<beans:property name="jndiName" value="jdbc/aoneDB" />
 	</beans:bean>
+
+	<!-- <jee:jndi-lookup expected-type="javax.sql.DataSource" id="dataSource" 
+		jndi-name="jdbc/aoneDB" /> -->
+	<!-- <beans:bean id="dataSource" class="oracle.jdbc.pool.OracleDataSource"> 
+		<beans:property name="URL" value="${db.url}" /> <beans:property name="user" 
+		value="${db.username}" /> <beans:property name="password" value="${db.password}" 
+		/> </beans:bean> -->
+<!-- 
+	<beans:bean id="aOneDao" class="com.oracle.aone.dao.AOneDataSource">
+		<beans:property name="jndi" value="jdbc/aoneDB" />
+	</beans:bean> -->
 
 	<beans:bean id="restTemplate" class="org.springframework.web.client.RestTemplate">
 		<beans:property name="messageConverters">
