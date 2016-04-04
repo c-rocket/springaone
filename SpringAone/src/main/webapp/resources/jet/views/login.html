@@ -1,0 +1,63 @@
+<!--
+ Copyright (c) 2014, 2016, Oracle and/or its affiliates.
+ The Universal Permissive License (UPL), Version 1.0
+ -->
+<h1>System Configuration</h1>
+<div id="form-container" class="oj-form-layout">
+	<div class="oj-form">
+		<div class="oj-flex">
+			<div class="oj-flex-item">
+				<label for="hostname">Hostname</label> <input id="hostname"
+					data-bind="ojComponent: 
+                   {component: 'ojInputText', value:hostname, required: true}">
+			</div>
+		</div>
+		<div class="oj-flex">
+			<div class="oj-flex-item">
+				<label for="port">Port</label> <input id="port"
+					data-bind="ojComponent: {
+        component: 'ojInputNumber', 
+        step:1, 
+        value:port,
+        converter: {
+                type: 'number', 
+                  options: {
+                    style:'decimal', minimumIntegerDigits: 2,
+                    minimumFractionDigits: 0, maximumFractionDigits: 0, 
+                    useGrouping: false}}}" />
+			</div>
+		</div>
+		<div class="oj-flex">
+			<div class="oj-flex-item">
+				<label for="username">Username</label> <input id="username"
+					data-bind="ojComponent: 
+                   {component: 'ojInputText', value:username, required: true}">
+			</div>
+		</div>
+		<div class="oj-flex">
+			<div class="oj-flex-item">
+				<label for="password">Password</label> <input id="password"
+					data-bind="ojComponent: 
+                   {component: 'ojInputText', value:password, required: true}">
+			</div>
+		</div>
+		<div class="oj-flex">
+			<div class="oj-flex-item">
+				<label id="sendingMessagesLabel" for="switch">Sending Messages:</label> <input id="sendingMessages"
+					data-bind="ojComponent: {component: 'ojSwitch', value: sendingMessages}" />
+			</div>
+		</div>
+		<div class="oj-flex">
+			<div class="oj-flex-item">
+				<button id="applyChangesButton"
+					data-bind="click: applyChanges, 
+                       ojComponent: { component: 'ojButton', label: 'Apply Changes' }"></button>
+			</div>
+		</div>
+	</div>
+	<div id="popupWrapper">
+		<div style="display: none" id="toaster" class="toaster" data-bind="ojComponent:{component: 'ojPopup'}">
+			<span data-bind="text:toastText"></span>
+		</div>
+	</div>
+</div>

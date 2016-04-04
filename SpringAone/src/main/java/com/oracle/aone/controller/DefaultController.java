@@ -14,6 +14,12 @@ public class DefaultController {
 	private static final Logger logger = LoggerFactory.getLogger(DefaultController.class);
 
 	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public String homeJet(Locale locale) {
+		logger.info("Index Page being loaded. The client locale is {}.", locale);
+		return "index-jet";
+	}
+	
+	@RequestMapping(value = "/old", method = RequestMethod.GET)
 	public String home(Locale locale) {
 		logger.info("Index Page being loaded. The client locale is {}.", locale);
 		return "index";
