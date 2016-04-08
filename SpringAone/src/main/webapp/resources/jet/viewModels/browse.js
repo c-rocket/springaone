@@ -5,155 +5,9 @@
 /**
  * Main content module
  */
-define([ 'ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojmasonrylayout', 'ojs/ojbutton', 'ojs/ojswitch', 'ojs/ojchart',
+define([ 'moment','itemService', 'offerService', 'commentService', 'ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojmasonrylayout', 'ojs/ojbutton', 'ojs/ojswitch', 'ojs/ojchart',
 		'ojs/ojlistview', 'ojs/ojdialog', 'ojs/ojinputtext', 'ojs/ojselectcombobox', 'ojs/ojarraytabledatasource', 'ojs/ojinputtext',
-		'services/item' ], function(oj, ko, $) {
-
-	function alertClick(data, event) {
-		var alertDisplay = data.name;
-		$.ajax({
-			type : 'PUT',
-			url : baseUrl + '/device/' + vm.currentId + '/alerts/' + data.value,
-			dataType : 'json',
-			success : function(jsonData) {
-				toaster('Alert ' + alertDisplay + ' sent');
-			},
-			error : function() {
-				alert('Error sending alert: ' + data.value);
-			}
-		});
-		return true;
-	}
-
-	function toaster(text) {
-		vm.toastText(text)
-		$('#toaster').ojPopup('open', '#device-container');
-		setTimeout(function() {
-			$('#toaster').ojPopup('close');
-		}, 1500);
-	}
-
-	function toggleEvent(data, event) {
-		$.ajax({
-			type : 'PUT',
-			url : baseUrl + '/device/' + vm.currentId + '/events/' + data.value,
-			dataType : 'json',
-			success : function(jsonData) {
-			},
-			error : function() {
-				alert('Error sending event: ' + data.value);
-			}
-		});
-	}
-
-	function deleteClick(data) {
-		var id = data.currentId;
-		vm.currentId = null;
-		vm.title('Select/Create a Device');
-		vm.id(null);
-		vm.type(null);
-		vm.image(null);
-
-		vm.metrics([]);
-		vm.alerts([]);
-		vm.events([]);
-
-		vm.lineSeriesValue([]);
-		vm.lineGroupsValue([]);
-		$("#deviceLayout").ojMasonryLayout("refresh");
-		$.ajax({
-			type : 'DELETE',
-			url : baseUrl + '/device/' + id,
-			dataType : 'json',
-			success : function(jsonData) {
-				loadDevices(vm.devicesDatasource);
-			},
-			error : function() {
-				alert('Error deleteing DeviceID=' + id);
-			}
-		});
-
-	}
-
-	function deviceClick(data, event) {
-		loadDevice(data.name);
-	}
-
-	function loadDevice(id) {
-		$.getJSON(baseUrl + '/device/' + id).then(function(device) {
-			console.log(device);
-			vm.id(device.id);
-			vm.type(device.resource);
-			vm.title(device.resource + ': ' + device.id)
-			vm.image('data:image/jpeg;base64,' + device.picture);
-			vm.metrics.removeAll();
-			var colorIndex = 0;
-			$.each(device.metrics, function(key, value) {
-				vm.metrics.push({
-					name : key,
-					value : value,
-					sizeClass : 'oj-masonrylayout-tile-2x1 tile tile' + colorIndex
-				});
-				colorIndex = (colorIndex + 1) % 7;
-			});
-			vm.alerts.removeAll();
-			$.each(device.alerts, function(key, value) {
-				vm.alerts.push({
-					name : value,
-					value : key,
-					buttonClick : alertClick
-				});
-			});
-			vm.events.removeAll();
-			$.each(device.events, function(key, value) {
-				vm.events.push({
-					name : value.display,
-					value : key,
-					toggleEvent : toggleEvent,
-					switchValue : ko.observable(value.value)
-				});
-			});
-
-			vm.lineSeriesValue.removeAll();
-			for (var i = 0; i < device.chartSeries.length; i++) {
-				vm.lineSeriesValue.push({
-					name : device.chartSeries[i],
-					items : device.chartValues[i]
-				});
-			}
-			vm.lineGroupsValue.removeAll();
-			$.each(device.chartLabels, function(key, value) {
-				vm.lineGroupsValue.push(value);
-			});
-			vm.currentId = device.id;
-			$("#metricsLayout").ojMasonryLayout("refresh");
-			$("#eventsLayout").ojMasonryLayout("refresh");
-		});
-	}
-
-	function updateDevice(id) {
-		$.getJSON(baseUrl + '/device/' + id).then(function(device) {
-			vm.metrics.removeAll();
-			var colorIndex = 0;
-			$.each(device.metrics, function(key, value) {
-				vm.metrics.push({
-					name : key,
-					value : value,
-					sizeClass : 'oj-masonrylayout-tile-2x1 tile tile' + colorIndex
-				});
-				colorIndex = (colorIndex + 1) % 7;
-			});
-			vm.lineSeriesValue.removeAll();
-			for (var i = 0; i < device.chartSeries.length; i++) {
-				vm.lineSeriesValue.push({
-					name : device.chartSeries[i],
-					items : device.chartValues[i]
-				});
-			}
-			vm.currentId = device.id;
-			$("#metricsLayout").ojMasonryLayout("refresh");
-		});
-	}
+		'ojs/ojmenu' ], function(moment, itemService, offerService, commentService, oj, ko, $) {
 
 	function createClick(data, event) {
 		vm.idInput(null);
@@ -192,101 +46,163 @@ define([ 'ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojmasonrylay
 	function cancelModalClose(data, event) {
 		$("#modalDialog1").ojDialog("close");
 	}
+	
+	function acceptOffer(data,event){
+		console.log("data",data,"event",event);
+	}
+	
+	function cancelOffer(data,event){
+		console.log("data",data,"event",event);
+	}
+
+	function loadItem(data, event) {
+		console.log("signedIn", vm.signedIn(), "isItemPoster", vm.isItemPoster(),"isAvailable",vm.isAvailable());
+		itemService.findItem(data.ITEM_ID).then(function(item){
+			//load item information
+			vm.ITEM_ID(item.ITEM_ID);
+			vm.ITEM_TITLE(item.ITEM_TITLE);
+			vm.USER_GRAVATAR(item.USER_GRAVATAR);
+			vm.ITEM_POST_DATE(moment(item.ITEM_POST_DATE).fromNow());
+			vm.USER_NAME(item.USER_NAME);
+			vm.ITEM_STATUS(item.ITEM_STATUS);
+			vm.ITEM_PRICE(item.ITEM_PRICE);
+			vm.ITEM_DESC(item.ITEM_DESC);
+			
+			vm.isItemPoster(item.ITEM_POSTED_BY == vm.uid);
+			vm.isSold(item.ITEM_STATUS == 'sold');
+			
+			vm.offerList.reset();
+			offerService.findOffers(item.ITEM_ID).then(function(offers){
+				$.each(offers, function(key, value) {
+					if (value.USER_NAME == vm.currentUser) {
+						vm.alreadyOffered(true);
+						value.alreadyOffered(true);
+					}
+					value.isAvailable = item.ITEM_STATUS == 'available';
+					value.isItemPoster = item.ITEM_POSTED_BY == vm.uid;
+					value.isSold = item.ITEM_STATUS == 'sold';
+					value.acceptOffer = acceptOffer;
+					value.cancelOffer = cancelOffer;
+					value.isOfferMaker = value.OFFER_ID == vm.iud;
+				});
+				vm.offerList.add(offers);
+			});
+			vm.commentList.reset();
+			commentService.findComments(item.ITEM_ID).then(function(comments){
+				console.log('comments',comments);
+				$.each(comments, function(key, value) {
+					value.COMMENT_CREATE_DATE = moment(value.COMMENT_CREATE_DATE).fromNow();
+				});
+				vm.commentList.add(comments);
+			});
+			
+			vm.isAvailable(item.ITEM_STATUS == 'available');
+			if (item.ITEM_POSTED_BY == vm.uid) {
+				vm.isItemPoster(true)
+			}else{
+				vm.isItemPoster(false)
+			}
+		});
+	}
+
 	function loadItems(datasource) {
 		datasource.reset();
-		$.getJSON(baseUrl + "item/").then(function(items) {
+		itemService.getAllItems().then(function(items) {
+			$.each(items, function(key, value) {
+				value.loadItem = loadItem;
+				value.ITEM_POST_DATE = moment(value.ITEM_POST_DATE).fromNow();
+			});
 			datasource.add(items);
 			vm.originalList = items;
 		});
 	}
 
-	function getDeviceTypes() {
-		vm.deviceTypes.removeAll();
-		$.ajax({
-			url : baseUrl + '/device/types'
-		}).then(function(data) {
-			$.each(data, function(index, value) {
-				if (value.enabled != null)
-					if (index == 0) {
-						vm.typeSelect([ value.name ]);
-					}
-				vm.deviceTypes.push({
-					value : value.name,
-					label : value.display
-				})
-			});
-		});
+	// Match based on text contained within title
+	function filteredTitle(titleSearch, originalList) {
+		if (!titleSearch) {
+			return originalList;
+		}
+		var titleContainsFilter = function(item) {
+			// ignore case by using all lowercase
+			var title = item.ITEM_TITLE.toLowerCase();
+			var search = titleSearch.toLowerCase()
+			return title.indexOf(search) > -1;
+		};
+		return ko.utils.arrayFilter(originalList, titleContainsFilter);
 	}
 
 	function viewModel() {
 		var self = this;
-
+		// Create Observable text field for filter
 		self.filterText = ko.observable();
+		// Create observable data source for list view
 		self.itemList = new oj.ArrayTableDataSource([], {
 			idAttribute : "ITEM_ID"
 		});
-		self.filterText.subscribe(function(newValue) {
-			self.itemList.reset(filteredTitle(newValue));
-		});
+		// Apply custom filter to list view, we also want to have the original
+		// list in the model to restore from
 		self.originalList = [];
-		var filteredTitle = function(titleSearch) {
-			if (!titleSearch) {
-				return self.originalList;
-			}
-			var titleContainsFilter = function(item) {
-				var title = item.ITEM_TITLE.toLowerCase();
-				var search = titleSearch.toLowerCase()
-				return title.indexOf(search) > -1;
-			};
-			var result = ko.utils.arrayFilter(self.originalList, titleContainsFilter);
-			return result;
+		self.filterText.subscribe(function(newValue) {
+			self.itemList.reset(filteredTitle(newValue, originalList));
+		});
+
+		self.baseUrl = baseUrl;
+
+		// setup observable authentication and default to false
+		self.signedIn = ko.observable(false);
+		self.isItemPoster = ko.observable(false);
+		self.isAvailable = ko.observable(false);
+		self.alreadyOffered = ko.observable(false);
+		
+		//create userId
+		self.uid = ko.observable();
+
+		// Item Admin functions
+		self.editItem = function(data, event) {
+			console.log("data", data);
+		}
+		
+		self.cancelItem = function(data, event) {
+			console.log("data", data);
 		}
 
-		self.item = ko.observable();
-		/*
-		 * 
-		 * 
-		 * 
-		 * 
-		 */
-		self.id = ko.observable();
-		self.type = ko.observable();
-		self.image = ko.observable();
+		// Offer Modal
+		self.makeOffer = function(data, event) {
+			console.log("data", data);
+		}
 
-		self.metrics = ko.observableArray([]);
-		self.alerts = ko.observableArray([]);
-		self.events = ko.observableArray([]);
-		self.deleteClick = deleteClick;
-
-		self.orientationValue = 'vertical';
-
-		/* chart data */
-
-		self.lineSeriesValue = ko.observableArray([]);
-		self.lineGroupsValue = ko.observableArray([]);
-
-		self.devicesDatasource = new oj.ArrayTableDataSource([], {
-			idAttribute : "name"
+		// setup form for submitting comments
+		self.commentText = ko.observable(false);
+		self.createComment = function(data, event) {
+			console.log("data", data);
+		}
+		self.isSold = ko.observable();
+		
+		//setup item components
+		self.offerList = new oj.ArrayTableDataSource([], {
+			idAttribute : "OFFER_ID"
 		});
-
-		self.createClick = createClick;
-
-		self.createModalClose = createModalClose;
-		self.cancelModalClose = cancelModalClose;
-		self.typeSelect = ko.observable('');
-		self.idInput = ko.observable('');
-		self.secretInput = ko.observable('');
-		self.toastText = ko.observable('');
-
-		self.typesource = ko.observable();
-		self.deviceTypes = ko.observableArray([]);
+		self.commentList = new oj.ArrayTableDataSource([], {
+			idAttribute : "COMMENT_ID"
+		});
+		self.ITEM_ID = ko.observable();
+		self.ITEM_TITLE = ko.observable();
+		self.USER_GRAVATAR = ko.observable();
+		self.ITEM_POST_DATE = ko.observable();
+		self.USER_NAME = ko.observable();
+		self.ITEM_STATUS = ko.observable();
+		self.ITEM_DESC = ko.observable();
+		self.ITEM_PRICE = ko.observable();
 	}
 
 	var vm = new viewModel();
 
+	// Use JQuery on ready to define execution points when the view loads
 	$(document).ready(function() {
+		// when the page loads, pull down the item list
 		loadItems(vm.itemList);
-		// console.log(item);
 	});
+
+	// define must return the view to bind on screen
 	return vm;
 });

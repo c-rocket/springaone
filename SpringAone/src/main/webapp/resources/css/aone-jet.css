@@ -1,107 +1,267 @@
 @font-face {
-  font-family: 'AppFont';
-  src: url("fonts/App_iconfont.woff") format("woff");
-  font-weight: normal;
-  font-style: normal;
+	font-family: 'AppFont';
+	src: url("fonts/App_iconfont.woff") format("woff");
+	font-weight: normal;
+	font-style: normal;
 }
 
 .demo-icon-font, .demo-icon-font-24 {
-  font-family: AppFont;
-  font-size: 16px;
-  line-height: 1;
-  display: inline-block;
-  font-weight: normal;
-  speak: none;
-  font-style: normal;
-  font-variant: normal;
-  text-transform: none;
-  text-align: center;
-  -moz-box-sizing: content-box;
-  box-sizing: content-box;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+	font-family: AppFont;
+	font-size: 16px;
+	line-height: 1;
+	display: inline-block;
+	font-weight: normal;
+	speak: none;
+	font-style: normal;
+	font-variant: normal;
+	text-transform: none;
+	text-align: center;
+	-moz-box-sizing: content-box;
+	box-sizing: content-box;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
 }
+
 .demo-icon-font:before, .demo-icon-font-24:before {
-  display: inline-block;
+	display: inline-block;
 }
 
 .demo-icon-font-24 {
-  font-size: 24px;
+	font-size: 24px;
 }
 
 /* Icons with a suffix "-16" were designed to look best at 16px. */
 .demo-bookmark-icon-16:before {
-  content: "\e606";
+	content: "\e606";
 }
 
 .demo-grid-icon-16:before {
-  content: "\e607";
+	content: "\e607";
 }
 
 .demo-list-icon-16:before {
-  content: "\e608";
+	content: "\e608";
 }
 
 .demo-gear-icon-16:before {
-  content: "\e609";
+	content: "\e609";
 }
 
 /* Icons with a suffix "-24" were designed to look best at 24px. */
 .demo-home-icon-24:before {
-  content: "\e600";
+	content: "\e600";
 }
 
 .demo-education-icon-24:before {
-  content: "\e601";
+	content: "\e601";
 }
 
 .demo-catalog-icon-24:before {
-  content: "\e602";
+	content: "\e602";
 }
 
 .demo-palette-icon-24:before {
-  content: "\e603";
+	content: "\e603";
 }
 
 .demo-library-icon-24:before {
-  content: "\e604";
+	content: "\e604";
 }
 
 .demo-chat-icon-24:before {
-  content: "\e605";
+	content: "\e605";
 }
 
 .demo-oracle-icon {
-  width: 137px;
-  height: 18px;
+	width: 137px;
+	height: 18px;
 }
+
 .demo-oracle-icon:before {
-  content: url("images/oracle_logo.svg");
-  display: inline;
+	content: url("images/oracle_logo.svg");
+	display: inline;
 }
 /* Adds padding between logo and application name */
-html:not([dir="rtl"]) .demo-oracle-icon {
-  padding-right: 4px;
+html:not ([dir="rtl"] ) .demo-oracle-icon {
+	padding-right: 4px;
 }
+
 html[dir="rtl"] .demo-oracle-icon {
-  padding-left: 4px;
+	padding-left: 4px;
 }
 
 .demo-avatar-icon {
-  width:24px;
-  height:24px;
+	width: 24px;
+	height: 24px;
 }
+
 .demo-avatar-icon:before {
-  content:url("images/avatar_24px.png")
+	content: url("images/avatar_24px.png")
 }
-@media (-webkit-min-device-pixel-ratio: 1.5), (min-resolution: 144dpi), (min-resolution: 1.5dppx) {
-  .demo-avatar-icon:before{
-    content:url("images/avatar_24px_2x.png");
-    -webkit-transform:translate(-25%, -25%) scale(0.5);transform:translate(-25%, -25%) scale(0.5)
-  }
+
+@media ( -webkit-min-device-pixel-ratio : 1.5) , ( min-resolution : 144dpi) , (
+		min-resolution : 1.5dppx) {
+	.demo-avatar-icon:before {
+		content: url("images/avatar_24px_2x.png");
+		-webkit-transform: translate(-25%, -25%) scale(0.5);
+		transform: translate(-25%, -25%) scale(0.5)
+	}
 }
 
 /* CUSTOM STUFF */
 .button-container {
 	text-align: center;
+}
+
+.oj-navigationlist-horizontal .oj-navigationlist-item.oj-selected {
+	border-color: black;
+}
+
+.oj-navigationlist-app-level.oj-navigationlist-horizontal .oj-navigationlist-item.oj-selected a.oj-navigationlist-item-content>.oj-navigationlist-item-label
+	{
+	color: black;
+}
+
+.oj-navigationlist-app-level.oj-navigationlist-horizontal:not (.oj-navigationlist-icon-only
+	 ) .oj-navigationlist-item.oj-selected .oj-navigationlist-item-icon {
+	color: black;
+}
+
+.oj-navigationlist-horizontal .oj-navigationlist-divider {
+	border-color: black;
+}
+
+.oj-navigationlist-horizontal .oj-navigationlist-item.oj-default {
+	border-color: white;
+}
+
+.oj-navigationlist-app-level.oj-navigationlist-horizontal .oj-navigationlist-item.oj-default a.oj-navigationlist-item-content>.oj-navigationlist-item-label
+	{
+	color: white;
+}
+
+.oj-navigationlist-app-level.oj-navigationlist-horizontal:not (.oj-navigationlist-icon-only
+	 ) .oj-navigationlist-item.oj-default .oj-navigationlist-item-icon {
+	color: white;
+}
+
+.img-circle.comment.gravatar {
+	width: 35px;
+	margin-right: 5px;
+}
+
+.img-circle.gravatar {
+	width: 30px;
+}
+
+.img-circle {
+	border-radius: 50%;
+}
+
+img {
+	vertical-align: middle;
+}
+
+img {
+	border: 0;
+}
+
+.panel {
+	border-radius: 2px;
+	border: 0;
+	box-shadow: 0 1px 6px rgba(0, 0, 0, 0.12), 0 1px 6px rgba(0, 0, 0, 0.12);
+	padding-left: 0; 
+	padding-right: 0;
+}
+
+.panel-default>.panel-heading, .panel:not ([class*="panel-"] ) >.panel-heading
+	{
+	color: rgba(0, 0, 0, 0.84);
+}
+
+[class*="panel-"]>.panel-heading {
+	color: rgba(255, 255, 255, 0.84);
+}
+
+.panel>.panel-heading, .panel-default>.panel-heading {
+	background-color: #ececec;
+}
+
+.panel-default>.panel-heading {
+	color: #333;
+	background-color: #f5f5f5;
+	border-color: #ddd;
+}
+
+.panel-heading {
+	padding: 10px 15px;
+	border-bottom: 1px solid transparent;
+	border-top-left-radius: 3px;
+	border-top-right-radius: 3px;
+}
+
+.panel-title {
+	font-weight: bold;
+}
+
+.panel-title {
+	margin-top: 0;
+	margin-bottom: 0;
+	font-size: 16px;
+	color: inherit;
+}
+
+.panel-body {
+	padding: 15px;
+}
+
+body, h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4 {
+	font-family: "RobotoDraft", "Roboto", "Helvetica Neue", Helvetica, Arial,
+		sans-serif;
+	font-weight: 300;
+}
+
+h3, .h3 {
+	font-size: 24px;
+}
+
+h1, .h1, h2, .h2, h3, .h3 {
+	margin-top: 20px;
+	margin-bottom: 10px;
+}
+
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+	font-family: inherit;
+	font-weight: 500;
+	line-height: 1.1;
+	color: inherit;
+}
+
+.label {
+	display: inline;
+	padding: .2em .6em .3em;
+	font-size: 75%;
+	font-weight: bold;
+	line-height: 1;
+	color: #fff;
+	text-align: center;
+	white-space: nowrap;
+	vertical-align: baseline;
+	border-radius: .25em;
+}
+
+.row {
+	display: inline-block;
+}
+
+.details .panel {
+	margin: 10px 0 10px 0;
+}
+
+.comment-list .row {
+	margin: 3px 0 3px 4px;
+}
+
+.offer-list button {
+    padding: 2px 5px 2px 0;
 }

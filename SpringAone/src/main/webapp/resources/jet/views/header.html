@@ -6,9 +6,8 @@
       chroming: 'half', display: 'icons', icons: {start: 'oj-web-applayout-offcanvas-icon'}}">
     </button>
   </div>
-  <div data-bind="css: smScreen() ? 'oj-flex-bar-center-absolute' : 'oj-flex-bar-middle oj-sm-align-items-baseline'">
-    <span role="img" class="oj-sm-only-hide oj-icon demo-oracle-icon" title="Oracle Logo" alt="Oracle Logo"></span>
-    <span class="oj-web-applayout-header-title" title="Device Simulator" data-bind="text: appName"></span>
+  <div data-bind="css: smScreen() ? 'oj-flex-bar-center-absolute' : 'oj-flex-bar-middle oj-sm-align-items-baseline'" style="background-color: #03a9f4;">
+    <img data-bind="attr: { src: baseUrl + 'resources/images/logo2.png'}" style="vertical-align: middle; border: 0">
   </div>
 </div>
 <div role="navigation" data-bind="ojComponent: {component: 'ojNavigationList',

@@ -3,12 +3,13 @@
 
 		<div class="demo-grid-sizes demo-flex-display">
 			<div class="oj-flex oj-flex-items-pad">
+				<!-- LEFT PANEL -->
 				<div class="oj-sm-3 oj-md-3 oj-lg-4 oj-xl-4 oj-flex-item">
 
 					<div class="button-container">
 						<input id="filter-text" type="text"
 							data-bind="ojComponent: {component: 'ojInputText', 
-                                  value: filterText}" placeholder="Filter Item List" />
+                                  value: filterText}" placeholder="Search" />
 					</div>
 					<br />
 					<ul id="listview" aria-label="list using array" class="list-group"
@@ -16,7 +17,7 @@
 					</ul>
 
 					<script type="text/html" id="item_template">
-   						<div class="list-group-item">
+   						<div class="list-group-item" data-bind="click:loadItem">
 							<div class="row-picture">
 								<img class="circle" data-bind="attr: { src: USER_GRAVATAR}">
 							</div>
@@ -34,74 +35,128 @@
 					</script>
 
 				</div>
+				<!-- RIGHT PANEL -->
 				<div class="oj-sm-3 oj-md-5 oj-lg-6 oj-xl-8 oj-flex-item">
+					<div class="oj-flex-items-pad details">
+						<div data-bind="visible: ITEM_ID() !== undefined">
+							<!-- HEADER -->
+							<div class="oj-flex">
+								<div class="oj-sm-12 oj-md-8 oj-flex-item">
+									<h3 data-bind="text:ITEM_TITLE"></h3>
+									<span> <img class="img-circle gravatar" data-bind="attr: { src: USER_GRAVATAR}"> Posted by <span
+										data-bind="text:USER_NAME"></span> - <span data-bind="text:ITEM_POST_DATE"></span> &nbsp; <span
+										data-bind="css:{label:true, status:true, sold:ITEM_STATUS=='sold',available:ITEM_STATUS=='available',cancelled:ITEM_STATUS=='cancelled'}, text:ITEM_STATUS"></span>
+									</span>
+								</div>
+								<div class="oj-sm-12 oj-md-4 oj-flex-item">
+									<div class="price-tag">
+										<span data-bind="text:ITEM_PRICE"></span>
+									</div>
 
-					<div class="oj-flex-items-pad">
-						<div class="oj-flex">
-							<div class="oj-flex-item">
-								<div id="metricsLayout" data-bind="visible: id, ojComponent: {component: 'ojMasonryLayout'}">
-									<div data-bind="foreach: metrics">
-										<div data-bind="css: sizeClass">
-											<div class="metricLabel" data-bind="text: name"></div>
-											<div class="metricValue" data-bind="text: value"></div>
-										</div>
+									<div data-bind="visible: signedIn() &&  isItemPoster()  &&  isAvailable()">
+										<button id="adminMenuButton"
+											data-bind="ojComponent: {component: 'ojButton', label: 'Admin', 
+                                   					menu: '#adminMenu'}">
+										</button>
+										<!-- To handle menu item selection, use a select listener as shown, not a click listener. -->
+										<ul id="adminMenu" style="display: none" data-bind="ojComponent: {component: 'ojMenu'}">
+											<li id="editPost"><a href="#" data-bind="click:editItem"><span class="oj-menu-item-icon oj-fwk-icon oj-fwk-icon-arrow-n"></span>Edit
+													Post</a></li>
+											<li id="divider"></li>
+											<li id="cancelPost"><a href="#" data-bind="click:cancelItem"><span
+													class="oj-menu-item-icon demo-icon-font demo-palette-icon-24"></span>Cancel Post</a></li>
+										</ul>
+									</div>
+
+									<div data-bind="visible: signedIn() &&  !isItemPoster()  &&  isAvailable() &&!alreadyOffered()">
+										<button id="button"
+											data-bind="click: makeOffer, 
+                       								ojComponent: { component: 'ojButton', label: 'Make an Offer' }">
+										</button>
 									</div>
 								</div>
 							</div>
-						</div>
-						<div class="oj-flex">
-							<div class="oj-flex-item">
-								<div id="eventsLayout" data-bind="visible: id, ojComponent: {component: 'ojMasonryLayout'}">
-									<div class="oj-masonrylayout-tile-2x2 tile blue" id="eventButtons">
-										<h3>Events</h3>
-										<hr />
-										<div id="events-container" data-bind="foreach: events">
-											<div class="button-container" data-bind="click:toggleEvent">
-												<label class="event-label" data-bind="text: name"></label> <input
-													data-bind="ojComponent: {component: 'ojSwitch', value:switchValue}" />
+							<!-- DESCRIPTION -->
+							<div class="oj-flex">
+								<div class="panel oj-flex-item">
+									<div class="panel-heading">
+										<h3 class="panel-title">Description</h3>
+									</div>
+									<div class="panel-body" data-bind="text:ITEM_DESC"></div>
+								</div>
+							</div>
+							<div class="oj-flex">
+								<div class="panel oj-flex-item ">
+									<div class="panel-heading">
+										<h3 class="panel-title">Offers</h3>
+									</div>
+									<div class="panel-body">
+										<ul id="offerView" aria-label="Orrers using array" class="list-group"
+											data-bind="ojComponent: {component: 'ojListView', data: offerList, item: {template: 'offer_template'}, selectionMode: 'none'}">
+										</ul>
+
+										<script type="text/html" id="offer_template">
+   											<div class="offer-list list-group-item">
+												<button data-bind="visible: OFFER_STATUS == 'accepted', 
+                       									ojComponent: { component: 'ojButton', label: 'Sold', disabled:true }">
+												</button>
+												<button data-bind="visible: isItemPoster && isAvailable, click:acceptOffer,ojComponent: { component: 'ojButton', label: 'Accept - ' + OFFER_AMOUNT }"</button>
+												<button data-bind="visible: isOfferMaker && isAvailable, click:cancelOffer, ojComponent: { component: 'ojButton', label: 'Cancel My Offer - ' + OFFER_AMOUNT }"></button>
+
+												<img class="img-circle comment gravatar" data-bind="attr: { src: USER_GRAVATAR}" class="img-circle offer gravatar" />
+												<span data-bind="text:USER_NAME"></span>
+											</div>
+										</script>
+									</div>
+								</div>
+							</div>
+							<div class="oj-flex">
+								<div class="panel oj-flex-item">
+									<div class="panel-heading">
+										<h3 class="panel-title">Comments</h3>
+									</div>
+									<div class="panel-body">
+										<ul id="commentView" aria-label="Comments using array" class="comment-list list-group"
+											data-bind="ojComponent: {component: 'ojListView', data: commentList, item: {template: 'comment_template'}, selectionMode: 'none'}">
+										</ul>
+										<script type="text/html" id="comment_template">
+   												<div class="list-group-item">
+													<img class="img-circle comment gravatar row" data-bind="attr: { src: USER_GRAVATAR}" class="img-circle offer gravatar"><span data-bind="USER_NAME"></span>
+													<div class="well well-sm cmt row">
+														<span class="cmt-title" data-bind="text:USER_NAME + ':'"></span> 
+														<span class="cmt-time pull-right"> 
+															<span data-bind="text:COMMENT_CREATE_DATE"></span>
+														</span> <br> <span data-bind="text:COMMENT_TEXT"></span>
+													</div>
+												</div>
+											</script>
+									</div>
+									<div class="panel-body">
+										<div id="form-container" class="oj-form-layout" data-bind="visible: isAvailable() && signedIn()">
+											<div class="oj-form row">
+												<div class="input-group-addon row">
+													<img data-bind="attr: { src: USER_GRAVATAR}" class="img-circle comment gravatar">
+												</div>
+												<div class="row" style="width: 300px">
+													<textarea id="text-area" data-bind="ojComponent: {component: 'ojTextArea', value: commentText}" placeholder="Comment here..."></textarea>
+												</div>
+												<span class="pull-right row">
+													<button id="createCommentButton" data-bind="ojComponent: { component: 'ojButton', label: 'comment' },click:createComment"></button>
+												</span>
 											</div>
 										</div>
 									</div>
-									<div class="oj-masonrylayout-tile-2x2 tile pink" id="alertButtons">
-										<h3>Alerts</h3>
-										<hr />
-										<div class="button-container" data-bind="foreach: alerts">
-											<button class="alert-button" data-bind="click:buttonClick, ojComponent: { component: 'ojButton', label: name }"></button>
-										</div>
-									</div>
-									<div class="oj-masonrylayout-tile-2x1 tile grey" style="text-align: center;"">
-										<img height="75%" style="margin: 20px auto;" aria-hidden="false" data-bind="attr: { src: image}">
-									</div>
-									<div class="oj-masonrylayout-tile-2x1 tile dark">
-										<div class="button-container">
-											<button class="delete-button" data-bind="click:deleteClick, ojComponent: { component: 'ojButton', label: 'Delete' }"></button>
-										</div>
-									</div>
 								</div>
 							</div>
 						</div>
-						<div class="oj-flex-item">
-							<div id="lineChart"
-								data-bind="ojComponent: {
-						        component: 'ojChart', 
-						        type: 'line',
-						        series: lineSeriesValue, 
-						        groups: lineGroupsValue, 
-						        animationOnDisplay: 'auto',
-						        animationOnDataChange: 'auto',
-						        orientation: 'vertical',
-						        hoverBehavior: 'dim'
-						        }"
-								style="width: 100%; height: 250px;"></div>
-						</div>
-						<div class="oj-flex-item">
-							<div id="deviceButtonsLayout" data-bind="visible: id, ojComponent: {component: 'ojMasonryLayout'}"></div>
+						<div class="oj-flex" data-bind="visible: ITEM_ID() === undefined">
+							<img data-bind="attr: { src: baseUrl + '/resources/images/forsale.jpg'}" style="width: 100%; height: 50%; padding-top: 30px">
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
-		<div id="dialogWrapper">
+		<!-- <div id="dialogWrapper">
 			<div style="display: none" id="modalDialog1" title="Create Device"
 				data-bind="ojComponent:{component: 'ojDialog', initialVisibility: 'hide'}">
 				<div class="oj-dialog-body">
@@ -118,10 +173,6 @@
 					<button id="cancelButton" data-bind="click:cancelModalClose, ojComponent: {component: 'ojButton', label: 'Cancel'}"></button>
 				</div>
 			</div>
-		</div>
-		<div id="popupWrapper">
-			<div style="display: none" id="toaster" class="toaster" data-bind="ojComponent:{component: 'ojPopup'}">
-				<span data-bind="text:toastText"></span>
-			</div>
-		</div>
+		</div> -->
 	</div>
+</div>

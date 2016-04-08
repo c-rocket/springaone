@@ -2,7 +2,7 @@
 
 'use strict';
 
-function offerService() {
+define('offerService',[ 'jquery' ], function($) {
 	return {
 		findOffers : function(itemId) {
 			return $.getJSON(baseUrl + "offer/" + itemId);
@@ -34,4 +34,4 @@ function offerService() {
 			});
 		}
 	}
-}
+});

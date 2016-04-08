@@ -1,6 +1,6 @@
 'use strict';
 
-function commentService() {
+define('commentService',[ 'jquery' ], function($) {
 	return {
 		addComment : function(itemId, payload, successHandler) {
 			$.ajax({
@@ -36,25 +36,4 @@ function commentService() {
 			});
 		}
 	};
-}
-
-app.factory('Comment', function($resource) {
-
-	return $resource(baseUrl + '/comment/:itemId', {}, {
-		'addComment' : function() {
-			method: 'POST'
-		},
-		'findComments' : {
-			method : 'GET',
-			isArray : true
-		},
-		'deleteComment' : {
-			method : 'DELETE',
-			params : {
-				taskId : '@id'
-			}
-		}
-
-	});
-
 });

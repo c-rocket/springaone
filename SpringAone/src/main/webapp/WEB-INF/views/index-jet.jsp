@@ -46,7 +46,7 @@
 				data-bind="ojModule: {viewName: 'navDrawer'}"></div>
 			<div class="oj-web-applayout-scrollable-wrapper">
 				<div class="oj-web-applayout-scrollable oj-web-applayout-page">
-					<header role="banner" class="oj-web-applayout-header" data-bind="ojModule: 'header'"></header>
+					<header role="banner" class="oj-web-applayout-header" data-bind="ojModule: 'header'" style="background-color: #03a9f4;"></header>
 					<!-- This is where your main page content will be loaded -->
 					<div class="oj-web-applayout-max-width oj-web-applayout-content">
 						<div class="oj-flex">

@@ -1,6 +1,6 @@
 'use strict';
 
-function authService() {
+function AuthService() {
 	return {
 		newUser : function(data, successHandler) {
 			$.ajax({

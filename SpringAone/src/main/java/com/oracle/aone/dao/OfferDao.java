@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 public class OfferDao extends AOneDataSource{
 
 	public List<Map<String, Object>> getOffersForItem(BigDecimal itemId) {
-		String sql = "SELECT OFFERS.OFFER_ID,USERS.USER_NAME, USERS.USER_GRAVATAR, OFFERS.OFFER_AMOUNT "
+		String sql = "SELECT OFFERS.OFFER_ID,USERS.USER_NAME, USERS.USER_GRAVATAR, OFFERS.OFFER_AMOUNT, OFFERS.OFFER_STATUS "
 				+ "from USERS, OFFERS where OFFERS.OFFER_BY = USERS.user_id and item_id =?";
 		return getJdbcTemplate().queryForList(sql, itemId);
 	}

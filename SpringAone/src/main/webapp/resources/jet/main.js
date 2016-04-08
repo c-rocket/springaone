@@ -1,7 +1,7 @@
 var baseUrl = '';
 /**
- * Copyright (c) 2014, 2016, Oracle and/or its affiliates.
- * The Universal Permissive License (UPL), Version 1.0
+ * Copyright (c) 2014, 2016, Oracle and/or its affiliates. The Universal
+ * Permissive License (UPL), Version 1.0
  */
 /**
  * Example of Require.js boostrap javascript
@@ -22,7 +22,10 @@ requirejs.config({
 		'ojtranslations' : 'libs/oj/v2.0.0/resources',
 		'signals' : 'libs/js-signals/signals.min',
 		'text' : 'libs/require/text',
-		'services' : 'services'
+		'moment' : 'lib/moment.min',
+		'itemService' : 'services/item',
+		'offerService' : 'services/offer',
+		'commentService' : 'services/comment'
 	}
 	// endinjector
 	,
@@ -46,14 +49,9 @@ requirejs.config({
 		}
 	}
 });
-
 require([ 'ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojrouter', 'ojs/ojmodule', 'ojs/ojoffcanvas', 'ojs/ojnavigationlist',
-		'ojs/ojarraytabledatasource' ], function(oj, ko, $) { // this callback
-																// gets executed
-																// when all
-																// required
-																// modules are
-																// loaded
+		'ojs/ojarraytabledatasource' ], function(oj, ko, $) {
+	// this callback gets executed when all required modules are loaded
 	var router = oj.Router.rootInstance;
 	router.configure({
 		'browse' : {
@@ -125,7 +123,7 @@ require([ 'ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojrouter', 
 	}, function(error) {
 		oj.Logger.error('Error in root start: ' + error.message);
 	});
-	
+
 	$(document).ready(function() {
 		baseUrl = $('#baseUrl').val();
 	});
