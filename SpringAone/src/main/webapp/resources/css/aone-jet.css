@@ -135,6 +135,14 @@ html[dir="rtl"] .demo-oracle-icon {
 	border-color: white;
 }
 
+.oj-navigationlist-app-level.oj-navigationlist-horizontal:not(.oj-navigationlist-icon-only) .oj-navigationlist-item:not(.oj-disabled) .oj-navigationlist-item-icon {
+    color: white;
+}
+
+.oj-navigationlist-app-level.oj-navigationlist-horizontal:not(.oj-navigationlist-icon-only) .oj-navigationlist-item.oj-selected .oj-navigationlist-item-icon {
+    color: black;
+}
+
 .oj-navigationlist-app-level.oj-navigationlist-horizontal .oj-navigationlist-item.oj-default a.oj-navigationlist-item-content>.oj-navigationlist-item-label
 	{
 	color: white;
@@ -264,4 +272,8 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
 
 .offer-list button {
     padding: 2px 5px 2px 0;
+}
+
+.oj-web-applayout-content {
+	background-color: white !important;
 }

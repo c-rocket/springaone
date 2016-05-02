@@ -3,7 +3,7 @@
  * The Universal Permissive License (UPL), Version 1.0
  */
 /**
- * Main content module
+ * Browse content module
  */
 define([ 'moment','itemService', 'offerService', 'commentService', 'ojs/ojcore', 'knockout', 'jquery', 'ojs/ojknockout', 'ojs/ojmasonrylayout', 'ojs/ojbutton', 'ojs/ojswitch', 'ojs/ojchart',
 		'ojs/ojlistview', 'ojs/ojdialog', 'ojs/ojinputtext', 'ojs/ojselectcombobox', 'ojs/ojarraytabledatasource', 'ojs/ojinputtext',

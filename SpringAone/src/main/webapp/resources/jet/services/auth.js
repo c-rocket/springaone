@@ -1,8 +1,15 @@
 'use strict';
 
-function AuthService() {
+define('authService', [ 'jquery' ], function($) {
+	var currentUser = {};
+
 	return {
-		newUser : function(data, successHandler) {
+		registerUser : function(username, email, pw, successHandler) {
+			var data = JSON.stringify({
+				username : username,
+				email : email,
+				pw : pw
+			});
 			$.ajax({
 				headers : {
 					'Accept' : 'application/json',
@@ -12,9 +19,21 @@ function AuthService() {
 				url : baseUrl + '/user/',
 				dataType : 'json',
 				data : data,
-				success : successHandler,
+				success : function(user) {
+					console.log('user', user);
+					if (user) {
+						currentUser.uid = user.USER_ID
+						currentUser.name = user.USER_NAME
+						currentUser.gravatar = user.USER_GRAVATAR
+						currentUser.email = user.USER_EMAIL
+						currentUser.signedIn = true
+					} else {
+						alert('Signup failed! Check email');
+					}
+					successHandler();
+				},
 				error : function() {
-					alert('Error posting user');
+					alert('Error registering user');
 				}
 			})
 		},
@@ -22,37 +41,15 @@ function AuthService() {
 		login : function(email, password) {
 			return $.getJSON(baseUrl + "login/" + email + "/" + password);
 		},
-	};
-};
-
-function userService() {
-	var currentUser = {};
-	return {
 		getCurrentUser : function() {
 			return currentUser;
 		},
-		registerUser : function(user, successHandler) {
-			$.ajax({
-				headers : {
-					'Accept' : 'application/json',
-					'Content-Type' : 'application/json'
-				},
-				type : 'POST',
-				url : baseUrl + '/user',
-				dataType : 'json',
-				data : user,
-				success : successHandler,
-				error : function() {
-					alert('Error posting user');
-				}
-			})
-		},
 		setCurrentUser : function(user) {
 			currentUser.name = user.name;
-			currentUser.gravatar = user.gravatar
-			currentUser.uid = user.uid
-			currentUser.email = user.email
-			currentUser.signedIn = user.signedIn
+			currentUser.gravatar = user.gravatar;
+			currentUser.uid = user.uid;
+			currentUser.email = user.email;
+			currentUser.signedIn = user.signedIn;
 		},
 		isSignedIn : function() {
 			if (currentUser.signedIn) {
@@ -77,4 +74,4 @@ function userService() {
 			});
 		}
 	};
-}
+});

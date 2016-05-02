@@ -7,9 +7,12 @@
 				<div class="oj-sm-3 oj-md-3 oj-lg-4 oj-xl-4 oj-flex-item">
 
 					<div class="button-container">
-						<input id="filter-text" type="text"
-							data-bind="ojComponent: {component: 'ojInputText', 
-                                  value: filterText}" placeholder="Search" />
+                        <input
+							id="filter-text" data-bind="ojComponent: {
+                   component: 'ojInputSearch',
+                   value: filterText}"
+							placeholder="Search" />
+
 					</div>
 					<br />
 					<ul id="listview" aria-label="list using array" class="list-group"
