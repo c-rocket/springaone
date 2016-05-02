@@ -3,13 +3,16 @@
 
 	<property name="setupFldr" location="./setup" />
 	<property name="app" location="." />
+	<property name="test.db.username" value="devuser" />
+	<property name="test.db.password" value="Welcome1#" />
+	<property name="test.db.url" value="jdbc:oracle:thin:@129.152.150.206:1521/PDB1.metcsgse00209.oraclecloud.internal" />
 
 	<target name="setup">
 		<copy todir="${app}/src/test/java" overwrite="true">
-			<fileset dir="${setupFldr}">
-				<include name="db.properties" />
-				<type type="file" />
-			</fileset>
+			<file basedir="${setupFldr}" file="${setupFldr}/db.properties" />
+			<filterchain>
+				<expandproperties />
+			</filterchain>
 		</copy>
 	</target>
 </project>
